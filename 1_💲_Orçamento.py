@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+import io
 
 # Configuração da página
 st.set_page_config(
@@ -11,26 +12,30 @@ st.set_page_config(
     page_icon='💲'
 )
 
-# Inserindo string de conexão
+# Configurar a string de conexão do Azure Blob Storage
 connection_string = "DefaultEndpointsProtocol=https;AccountName=juliocasagrande27;AccountKey=ILe66QPoZ8QDobUrAv99P/+BuXQpP8BSd6fYGyDd7aFix+Znd7a6LqTh8m/pRfWEPQYTNoMAagoO+AStoczsqw==;EndpointSuffix=core.windows.net"
+
+# Nome do contêiner e nome do arquivo no Blob Storage
+container_name = "teste"
+file_name = "Forecast_actual.xlsx"  # Substitua pelo nome do seu arquivo XLSX
+
+# Criar um cliente de serviço de blob
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
-# Nome do container e nome do arquivo no Blob Storage
-container_name = "teste"
-file_name = "Forecast_actual.xlsx"
-
-# Carregar o arquivo do Blob Storage
+# Obter o contêiner
 container_client = blob_service_client.get_container_client(container_name)
+
+# Obter o blob (arquivo)
 blob_client = container_client.get_blob_client(file_name)
 
-# Baixar o arquivo para um arquivo temporário local
-temp_file_path = "temp_file.xlsx"
-with open(temp_file_path, "wb") as file:
-    blob_data = blob_client.download_blob()
-    file.write(blob_data.readall())
+# Ler o conteúdo do blob (arquivo) como binário
+blob_data = blob_client.download_blob()
+blob_binary_data = blob_data.readall()
+
+# Converter o conteúdo binário para um DataFrame
+df_original = pd.read_excel(io.BytesIO(blob_binary_data))
 
 # Carregar os dados do arquivo local no Pandas DataFrame
-df_original = pd.read_excel(temp_file_path, sheet_name='Resumo CAPEX ')
 df_original = df_original.sort_values(by='FORECAST 2023', ascending=False)
 
 # Lista com os nomes das colunas que queremos selecionar
