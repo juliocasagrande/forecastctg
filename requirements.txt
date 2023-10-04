@@ -2,4 +2,4 @@ numpy
 pandas
 streamlit
 openpyxl
-azure
+azure-storage-blob
