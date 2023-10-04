@@ -3,3 +3,4 @@ pandas
 streamlit
 openpyxl
 azure_storage_blob
+azure_core
