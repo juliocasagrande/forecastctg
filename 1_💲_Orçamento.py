@@ -6,7 +6,7 @@ from datetime import datetime
 # Configuração da página
 st.set_page_config(
     layout='wide',
-    page_title='Orçamento CTG',
+    page_title='Forecast - Planilha de Controle',
     page_icon='💲'
 )
 
@@ -45,7 +45,7 @@ st.title('Orçamento Engenharia Eletromecânica - CTG Br')
 st.write(f"Atualizado em: {hoje} às {hora_atual} hs")
 df_dict = pd.DataFrame(df_dict)
 
-uhe = st.selectbox('Selecione a UHE', ["TODAS"] + df_dict['UHE'].unique().tolist())
+uhe = st.sidebar.selectbox('Selecione a UHE', ["TODAS"] + df_dict['UHE'].unique().tolist())
 
 if uhe == "TODAS":
     df_dict
