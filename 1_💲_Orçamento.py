@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # Carregar os dados e ordenar pelo Forecast 2023
-df_original = pd.read_excel(r"C:\Users\jlcasagrande\AppData\Roaming\Python\Python311\Scripts\Projetos Python\Orçamento_Streamlit\Forecast_actual.xlsx", sheet_name='Resumo CAPEX ')
+df_original = pd.read_excel("Forecast_actual.xlsx", sheet_name='Resumo CAPEX ')
 df_original = df_original.sort_values(by='FORECAST 2023', ascending=False)
 
 # Lista com os nomes das colunas que queremos selecionar
